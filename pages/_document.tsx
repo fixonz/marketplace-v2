@@ -28,18 +28,18 @@ class MyDocument extends Document {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         {/* Meta tags */}
-        <meta name="keywords" content="nft, ethereum, protocol" />
-        <meta name="keywords" content="NFT, API, Protocol" />
+        <meta name="keywords" content="nft, ethereum, rocks" />
+        <meta name="keywords" content="NFT, API, rocks" />
 
         {/* Favicon */}
         <link
           rel="shortcut icon"
           type="image/svg"
-          href="https://marketplace.reservoir.tools/reservoir.svg"
+          href="https://raw.githubusercontent.com/fixonz/marketplace-v1/main/public/favicon.ico"
         />
 
         {/* Reservoir meta tags */}
-        <meta property="reservoir:title" content="Reservoir Market" />
+        <meta property="reservoir:title" content="RockFi Marketplace | All Rocks Marketplace ZERO fees" />
         <meta property="reservoir:icon" content="/reservoir-source-icon.png" />
         <meta
           property="reservoir:token-url-mainnet"
