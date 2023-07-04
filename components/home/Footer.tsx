@@ -32,31 +32,27 @@ const SectionLink: FC<SectionLinkProps> = ({ name, href }) => (
 
 const developerSectionLinks = [
   {
-    name: 'Docs',
-    href: 'https://docs.reservoir.tools/docs',
+    name: 'RockFi Thread',
+    href: 'https://twitter.com/Rockfiio/status/1675880357592219648?s=20',
   },
   {
-    name: 'API Reference',
-    href: 'https://docs.reservoir.tools/reference/overview',
-  },
-  {
-    name: 'Github',
-    href: 'https://github.com/reservoirprotocol',
+    name: 'Whitepaper',
+    href: 'https://twitter.com/Rockfiio/status/1675880357592219648?s=20',
   },
 ]
 
 const companySectionLinks = [
   {
-    name: 'Jobs',
-    href: 'https://jobs.ashbyhq.com/reservoir',
+    name: 'PepeRock',
+    href: 'https://marketplace-v2-ejf2w5ft9-fixonz.vercel.app/ethereum/asset/0xd249a9aad31fcc54e8c352b2063425306ac1f54d:0?tab=info',
   },
   {
-    name: 'Terms of Use',
-    href: 'https://reservoir.tools/terms',
+    name: 'BlackRock',
+    href: 'https://marketplace-v2-ejf2w5ft9-fixonz.vercel.app/ethereum/collection/0x06aa761144a080365a5bb8d15e754c426909d4cf',
   },
   {
-    name: 'Privacy Policy',
-    href: 'https://reservoir.tools/privacy',
+    name: 'WhiteRock',
+    href: 'https://marketplace-v2-ejf2w5ft9-fixonz.vercel.app/ethereum/collection/0xe886493948aaf795902a6c3b3734df8255b83203',
   },
 ]
 
@@ -79,13 +75,13 @@ export const Footer = () => {
     >
       <Flex css={{ gap: 80, '@bp600': { gap: 136 } }}>
         <Flex direction="column">
-          <SectionTitle title="Developers" />
+          <SectionTitle title="Info" />
           {developerSectionLinks.map((props) => (
             <SectionLink key={props.name} {...props} />
           ))}
         </Flex>
         <Flex direction="column">
-          <SectionTitle title="Company" />
+          <SectionTitle title="Other" />
           {companySectionLinks.map((props) => (
             <SectionLink key={props.name} {...props} />
           ))}
@@ -95,12 +91,12 @@ export const Footer = () => {
         direction="column"
         css={{ alignItems: 'flex-start', '@bp600': { alignItems: 'flex-end' } }}
       >
-        <SectionTitle title="Join Reservoir Community" />
+        <SectionTitle title="Join RockFi Community" />
         <Flex css={{ gap: '$4', mt: 16 }}>
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href="https://twitter.com/reservoir0x"
+            href="https://twitter.com/Rockfiio"
           >
             <Button size="xs" color="gray3">
               <FontAwesomeIcon icon={faTwitter} width={14} height={14} />
