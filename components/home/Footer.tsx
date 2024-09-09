@@ -43,16 +43,16 @@ const developerSectionLinks = [
 
 const companySectionLinks = [
   {
-    name: 'PepeRock',
-    href: 'https://marketplace-v2-ejf2w5ft9-fixonz.vercel.app/ethereum/asset/0xd249a9aad31fcc54e8c352b2063425306ac1f54d:0?tab=info',
+    name: 'SteezyApeGang',
+    href: 'https://marketplace-v2-khaki.vercel.app/ethereum/collection/0x70789e18a75611a9516d6251d650d096740a9e07',
   },
   {
-    name: 'BlackRock',
-    href: 'https://marketplace-v2-ejf2w5ft9-fixonz.vercel.app/ethereum/collection/0x06aa761144a080365a5bb8d15e754c426909d4cf',
+    name: 'HMN5',
+    href: 'https://marketplace-v2-khaki.vercel.app/ethereum/collection/0x32fc5bcabc1f78308be11754493c49116c0fa35f',
   },
   {
-    name: 'WhiteRock',
-    href: 'https://marketplace-v2-ejf2w5ft9-fixonz.vercel.app/ethereum/collection/0xe886493948aaf795902a6c3b3734df8255b83203',
+    name: 'SteezyGenesis',
+    href: 'https://marketplace-v2-khaki.vercel.app/ethereum/collection/0x83296c35ac338ed6c4ab7db1bb3d6ca90ae3b9c7',
   },
 ]
 
