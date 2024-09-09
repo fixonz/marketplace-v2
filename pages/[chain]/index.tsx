@@ -179,7 +179,7 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
             </Flex>
           </Flex>
           <Text style="body1" color="subtle" css={{ mb: 48 }}>
-            Multi-Chain Explorer, powered by RockFi
+            Multi-Chain Marketplace powered by OKINA Community
           </Text>
         </Flex>
         <Flex css={{ my: '$6', gap: 65 }} direction="column">
@@ -196,7 +196,7 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
             }}
           >
             <Text style="h4" as="h4">
-              Popular Rock  Collections
+              OKINA LABS Collections
             </Text>
             <Flex align="center" css={{ gap: '$4' }}>
               <CollectionsTimeDropdown
