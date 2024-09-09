@@ -32,12 +32,12 @@ const SectionLink: FC<SectionLinkProps> = ({ name, href }) => (
 
 const developerSectionLinks = [
   {
-    name: 'OKINA LABS',
-    href: 'https://twitter.com/Rockfiio/status/1675880357592219648?s=20',
+    name: 'OKINA Labs',
+    href: 'https://twitter.com/OKINALabs',
   },
   {
     name: 'xMakeItMerch',
-    href: 'https://xnerch.xyz',
+    href: 'https://xmerch.xyz',
   },
 ]
 
@@ -59,77 +59,51 @@ const companySectionLinks = [
 export const Footer = () => {
   return (
     <Flex
-  justify="between"
-  css={{
-    borderTop: '1px solid $gray7',
-    borderStyle: 'solid',
-    pt: '$5',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: 36,
-    '@bp600': {
-      flexDirection: 'row',
-      gap: 0,
-    },
-  }}
->
-  <Flex css={{ gap: 80, '@bp600': { gap: 136 } }}>
-    <Flex direction="column">
-      <SectionTitle title="Info" />
-      {developerSectionLinks.map((props) => (
-        <SectionLink key={props.name} {...props} />
-      ))}
+      justify="between"
+      css={{
+        borderTop: '1px solid $gray7',
+        borderStyle: 'solid',
+        pt: '$5',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: 36,
+        '@bp600': {
+          flexDirection: 'row',
+          gap: 0,
+        },
+      }}
+    >
+      <Flex css={{ gap: 80, '@bp600': { gap: 136 } }}>
+        <Flex direction="column">
+          <SectionTitle title="Info" />
+          {developerSectionLinks.map((props) => (
+            <SectionLink key={props.name} {...props} />
+          ))}
+        </Flex>
+        <Flex direction="column">
+          <SectionTitle title="Other" />
+          {companySectionLinks.map((props) => (
+            <SectionLink key={props.name} {...props} />
+          ))}
+        </Flex>
+      </Flex>
+      <Flex
+        direction="column"
+        css={{ alignItems: 'flex-start', '@bp600': { alignItems: 'flex-end' } }}
+      >
+        <SectionTitle title="Join OKINA Labs Community" />
+        <Flex css={{ gap: '$4', mt: 16 }}>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://twitter.com/OKINALabs"
+          >
+            <Button size="xs" color="gray3">
+              <FontAwesomeIcon icon={faTwitter} width={14} height={14} />
+            </Button>
+          </a>
+        </Flex>
+      </Flex>
     </Flex>
-    <Flex direction="column">
-      <SectionTitle title="Other" />
-      {companySectionLinks.map((props) => (
-        <SectionLink key={props.name} {...props} />
-      ))}
-    </Flex>
-  </Flex>
-  <Flex
-    direction="column"
-    css={{ alignItems: 'flex-start', '@bp600': { alignItems: 'flex-end' } }}
-  >
-    <SectionTitle title="Join OKINA LABS Community" />
-    <Flex css={{ gap: '$4', mt: 16 }}>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://x.com/okinalabs"
-      >
-        <Button size="xs" color="gray3">
-          <FontAwesomeIcon icon={faTwitter} width={14} height={14} />
-        </Button>
-      </a>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://discord.com/invite/your-invite-link"
-      >
-        <Button size="xs" color="gray3">
-          <FontAwesomeIcon icon={faDiscord} width={14} height={14} />
-        </Button>
-      </a>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://instagram.com/your-instagram-handle"
-      >
-        <Button size="xs" color="gray3">
-          <FontAwesomeIcon icon={faInstagram} width={14} height={14} />
-        </Button>
-      </a>
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href="https://t.me/your-telegram-channel"
-      >
-        <Button size="xs" color="gray3">
-          <FontAwesomeIcon icon={faTelegram} width={14} height={14} />
-        </Button>
-      </a>
-    </Flex>
-    {process.env.NODE_ENV === 'development' && <PreviewButton />}
-  </Flex>
-</Flex>
+  )
+}
