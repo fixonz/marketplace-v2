@@ -424,7 +424,7 @@ const IndexPage: NextPage = () => {
                 style="body1"
                 css={{ color: '$gray11', textAlign: 'center', mb: '$4' }}
               >
-                Connect wallet to instant sell your Rocks across all major
+                Connect wallet to instant sell your OKINA Labs NFTS across all major
                 marketplaces.
               </Text>
               <ConnectWalletButton />
