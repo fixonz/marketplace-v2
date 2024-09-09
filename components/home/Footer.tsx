@@ -32,12 +32,12 @@ const SectionLink: FC<SectionLinkProps> = ({ name, href }) => (
 
 const developerSectionLinks = [
   {
-    name: 'RockFi Thread',
-    href: 'https://twitter.com/Rockfiio/status/1675880357592219648?s=20',
+    name: 'OKINA Labs',
+    href: 'https://x.com/okinalabs',
   },
   {
-    name: 'Whitepaper',
-    href: 'https://twitter.com/Rockfiio/status/1675880357592219648?s=20',
+    name: '#xmakeitmerch',
+    href: 'https://xmerch.xyz',
   },
 ]
 
@@ -91,19 +91,45 @@ export const Footer = () => {
         direction="column"
         css={{ alignItems: 'flex-start', '@bp600': { alignItems: 'flex-end' } }}
       >
-        <SectionTitle title="Join RockFi Community" />
-        <Flex css={{ gap: '$4', mt: 16 }}>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://twitter.com/Rockfiio"
-          >
-            <Button size="xs" color="gray3">
-              <FontAwesomeIcon icon={faTwitter} width={14} height={14} />
-            </Button>
-          </a>
-        </Flex>
+      <SectionTitle title="Join OKINA LABS Community" />
+      <Flex css={{ gap: '$4', mt: 16 }}>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://x.com/okinalabs"
+        >
+          <Button size="xs" color="gray3">
+            <FontAwesomeIcon icon={faTwitter} width={14} height={14} />
+          </Button>
+        </a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://discord.com/invite/your-invite-link"
+        >
+          <Button size="xs" color="gray3">
+            <FontAwesomeIcon icon={faDiscord} width={14} height={14} />
+          </Button>
+        </a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://instagram.com/your-instagram-handle"
+        >
+          <Button size="xs" color="gray3">
+            <FontAwesomeIcon icon={faInstagram} width={14} height={14} />
+          </Button>
+        </a>
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://t.me/your-telegram-channel"
+        >
+          <Button size="xs" color="gray3">
+            <FontAwesomeIcon icon={faTelegram} width={14} height={14} />
+          </Button>
+        </a>
       </Flex>
     </Flex>
-  )
-}
+  );
+};
