@@ -120,7 +120,7 @@ const Navbar = () => {
           <Box css={{ flex: 1, px: '$5', maxWidth: 460 }}>
             <GlobalSearch
               ref={searchRef}
-              placeholder="Search indexed rock collections"
+              placeholder="Search OKINA Labs collections"
               containerCss={{ width: '100%' }}
               key={router.asPath}
             />
