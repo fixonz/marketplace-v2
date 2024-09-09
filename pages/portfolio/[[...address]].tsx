@@ -415,7 +415,7 @@ const IndexPage: NextPage = () => {
               css={{ mx: 'auto', py: '120px', maxWidth: '350px', gap: '$4' }}
             >
               <Text style="h4" css={{ mb: '$3' }}>
-                Sell your Rock instantly
+                Sell your NFT instantly
               </Text>
               <Text css={{ color: '$gray11' }}>
                 <FontAwesomeIcon icon={faWallet} size="2xl" />
