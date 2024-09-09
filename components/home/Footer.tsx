@@ -3,6 +3,12 @@ import { Text, Box, Flex, Anchor, Button } from '../primitives'; // Ensure these
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faDiscord, faInstagram, faTelegram } from '@fortawesome/free-brands-svg-icons';
 import { SectionTitle } from '@your-ui-library'; // Ensure this import is correct
+import { FC } from 'react';
+import { Text, Box, Flex, Anchor, Button } from '../primitives';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTwitter, faDiscord, faInstagram, faTelegram } from '@fortawesome/free-brands-svg-icons';
+import PreviewButton from '../PreviewButton'; // Import the PreviewButton
+
 
 type SectionTitleProps = {
   title: string
@@ -57,7 +63,8 @@ const companySectionLinks = [
   },
 ]
 
-export const Footer = () => {
+export 
+const Footer: FC = () => {
   return (
     <Flex
       justify="between"
@@ -131,7 +138,11 @@ export const Footer = () => {
             </Button>
           </a>
         </Flex>
+        {/* Add the PreviewButton here */}
+        {process.env.NODE_ENV === 'development' && <PreviewButton />}
       </Flex>
     </Flex>
   );
 };
+
+export default Footer;
