@@ -1,8 +1,8 @@
-import { FC } from 'react'
-import { Text, Box, Flex, Anchor, Button } from '../primitives'
+import { FC } from 'react';
+import { Text, Box, Flex, Anchor, Button } from '../primitives'; // Ensure these are correct imports
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faDiscord, faInstagram, faTelegram } from '@fortawesome/free-brands-svg-icons';
-import { Button, Flex, SectionTitle } from '@your-ui-library'; // Adjust imports as needed
+import { SectionTitle } from '@your-ui-library'; // Ensure this import is correct
 
 type SectionTitleProps = {
   title: string
