@@ -2,28 +2,24 @@ import { FC } from 'react';
 import { Text, Box, Flex, Anchor, Button } from '../primitives'; // Ensure these are correct imports
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faDiscord, faInstagram, faTelegram } from '@fortawesome/free-brands-svg-icons';
-import { SectionTitle } from '@your-ui-library'; // Ensure this import is correct
-import { FC } from 'react';
-import { Text, Box, Flex, Anchor, Button } from '../primitives';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTwitter, faDiscord, faInstagram, faTelegram } from '@fortawesome/free-brands-svg-icons';
 import PreviewButton from '../PreviewButton'; // Import the PreviewButton
 
-
+// Define the SectionTitle component
 type SectionTitleProps = {
-  title: string
-}
+  title: string;
+};
 
 const SectionTitle: FC<SectionTitleProps> = ({ title }) => (
   <Text style="subtitle1" css={{ color: '$gray12', mb: 8 }}>
     {title}
   </Text>
-)
+);
 
+// Define the SectionLink component
 type SectionLinkProps = {
-  name: string
-  href: string
-}
+  name: string;
+  href: string;
+};
 
 const SectionLink: FC<SectionLinkProps> = ({ name, href }) => (
   <Anchor
@@ -35,8 +31,9 @@ const SectionLink: FC<SectionLinkProps> = ({ name, href }) => (
   >
     {name}
   </Anchor>
-)
+);
 
+// Define links for the developer section
 const developerSectionLinks = [
   {
     name: 'OKINA Labs',
@@ -46,8 +43,9 @@ const developerSectionLinks = [
     name: '#xmakeitmerch',
     href: 'https://xmerch.xyz',
   },
-]
+];
 
+// Define links for the company section
 const companySectionLinks = [
   {
     name: 'SteezyApeGang',
@@ -61,9 +59,9 @@ const companySectionLinks = [
     name: 'SteezyGenesis',
     href: 'https://marketplace-v2-khaki.vercel.app/ethereum/collection/0x83296c35ac338ed6c4ab7db1bb3d6ca90ae3b9c7',
   },
-]
+];
 
-export 
+// Define the Footer component
 const Footer: FC = () => {
   return (
     <Flex
