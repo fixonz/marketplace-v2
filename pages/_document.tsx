@@ -34,12 +34,12 @@ class MyDocument extends Document {
         {/* Favicon */}
         <link
           rel="shortcut icon"
-          type="image/svg"
-          href="https://raw.githubusercontent.com/fixonz/marketplace-v1/main/public/favicon.ico"
+          type="image/png"
+          href="https://cdn.discordapp.com/attachments/973140319677866024/1282730886730743980/4d58b4ca-b990-4058-ad5e-502f917d54cb.png?ex=66e06bbb&is=66df1a3b&hm=e45f64f7209729c6dea8117531ddc44867080e6b796cc0f47a5a0703173b2fcd&"
         />
 
         {/* Reservoir meta tags */}
-        <meta property="reservoir:title" content="RockFi Marketplace | All Rocks Marketplace ZERO fees" />
+        <meta property="reservoir:title" content="OKINA Labs Marketplace | All collections" />
         <meta property="reservoir:icon" content="/reservoir-source-icon.png" />
         <meta
           property="reservoir:token-url-mainnet"
