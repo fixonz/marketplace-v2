@@ -102,14 +102,14 @@ const Navbar = () => {
             <Box css={{ width: 112, cursor: 'pointer' }}>
               {theme == 'dark' ? (
                 <Image
-                  src="/reservoirMarketLogo.svg"
+                  src="logo.png"
                   width={112}
                   height={36}
                   alt="Reservoir"
                 />
               ) : (
                 <Image
-                  src="/reservoirMarketLogoLight.svg"
+                  src="/logo.png"
                   width={112}
                   height={36}
                   alt="Reservoir"
@@ -128,7 +128,7 @@ const Navbar = () => {
           <Flex align="center" css={{ gap: '$5', mr: '$5' }}>
             <Link href={`/${routePrefix}/collection-rankings`}>
               <NavItem active={router.pathname.includes('collection-rankings')}>
-               Rock Collections
+               OKINA Labs
               </NavItem>
             </Link>
             <Link href="/portfolio">
