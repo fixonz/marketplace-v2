@@ -1,7 +1,8 @@
 import { FC } from 'react'
 import { Text, Box, Flex, Anchor, Button } from '../primitives'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTwitter } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTwitter, faDiscord, faInstagram, faTelegram } from '@fortawesome/free-brands-svg-icons';
+import { Button, Flex, SectionTitle } from '@your-ui-library'; // Adjust imports as needed
 
 type SectionTitleProps = {
   title: string
@@ -91,44 +92,45 @@ export const Footer = () => {
         direction="column"
         css={{ alignItems: 'flex-start', '@bp600': { alignItems: 'flex-end' } }}
       >
-      <SectionTitle title="Join OKINA LABS Community" />
-      <Flex css={{ gap: '$4', mt: 16 }}>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://x.com/okinalabs"
-        >
-          <Button size="xs" color="gray3">
-            <FontAwesomeIcon icon={faTwitter} width={14} height={14} />
-          </Button>
-        </a>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://discord.com/invite/your-invite-link"
-        >
-          <Button size="xs" color="gray3">
-            <FontAwesomeIcon icon={faDiscord} width={14} height={14} />
-          </Button>
-        </a>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://instagram.com/your-instagram-handle"
-        >
-          <Button size="xs" color="gray3">
-            <FontAwesomeIcon icon={faInstagram} width={14} height={14} />
-          </Button>
-        </a>
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://t.me/your-telegram-channel"
-        >
-          <Button size="xs" color="gray3">
-            <FontAwesomeIcon icon={faTelegram} width={14} height={14} />
-          </Button>
-        </a>
+        <SectionTitle title="Join OKINA LABS Community" />
+        <Flex css={{ gap: '$4', mt: 16 }}>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://x.com/okinalabs"
+          >
+            <Button size="xs" color="gray3">
+              <FontAwesomeIcon icon={faTwitter} width={14} height={14} />
+            </Button>
+          </a>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://discord.com/invite/your-invite-link"
+          >
+            <Button size="xs" color="gray3">
+              <FontAwesomeIcon icon={faDiscord} width={14} height={14} />
+            </Button>
+          </a>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://instagram.com/your-instagram-handle"
+          >
+            <Button size="xs" color="gray3">
+              <FontAwesomeIcon icon={faInstagram} width={14} height={14} />
+            </Button>
+          </a>
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://t.me/your-telegram-channel"
+          >
+            <Button size="xs" color="gray3">
+              <FontAwesomeIcon icon={faTelegram} width={14} height={14} />
+            </Button>
+          </a>
+        </Flex>
       </Flex>
     </Flex>
   );
