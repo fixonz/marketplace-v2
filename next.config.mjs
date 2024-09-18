@@ -1,7 +1,7 @@
 import { withSentryConfig } from '@sentry/nextjs'
 import * as tsImport from 'ts-import'
 
-const loadTS = (filePath) => tsImport.load(filePath)
+const loadTS = async (filePath) => tsImport.load(filePath)
 
 const { DefaultChain: defaultChain } = await loadTS('./utils/chains.ts')
 
@@ -28,7 +28,6 @@ const nextConfig = {
         destination: `/${defaultChain.routePrefix}`,
         permanent: false,
       },
-
       {
         source: '/collection/:chain/:collection',
         destination: '/:chain/collection/:collection',
@@ -53,11 +52,11 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-          value: "frame-ancestors 'self' https://marketplace-v2-gh982kt3j-fixonzs-projects.vercel.app",
-        },
-        {
-          key: 'X-Frame-Options',
-          value: 'ALLOW-FROM https://marketplace-v2-gh982kt3j-fixonzs-projects.vercel.app', // Note: This value is not widely supported
+            value: "frame-ancestors 'self' https://marketplace-v2-gh982kt3j-fixonzs-projects.vercel.app",
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY', // This value is generally more widely supported
           },
         ],
       },
