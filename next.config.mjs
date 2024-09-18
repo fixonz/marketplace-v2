@@ -53,11 +53,11 @@ const nextConfig = {
         headers: [
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors *;", // Allow embedding from any origin
+          value: "frame-ancestors 'self' https://marketplace-v2-gh982kt3j-fixonzs-projects.vercel.app",
         },
-          {
-            key: 'X-Frame-Options',
-            value: 'ALLOW-FROM *', // Note: This value is not widely supported
+        {
+          key: 'X-Frame-Options',
+          value: 'ALLOW-FROM https://marketplace-v2-gh982kt3j-fixonzs-projects.vercel.app', // Note: This value is not widely supported
           },
         ],
       },
