@@ -50,7 +50,7 @@ const { chains, publicClient } = configureChains(supportedChains, [
 ])
 
 const { connectors } = getDefaultWallets({
-  appName: 'RockFi Marketplace',
+  appName: 'STZY Marketplace',
   chains,
 })
 
