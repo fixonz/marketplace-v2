@@ -14,9 +14,9 @@ type Props = {
  * @param description - The description of the page.
  */
 export const Head: FC<Props> = ({
-  ogImage = 'https://raw.githubusercontent.com/fixonz/marketplace-v1/main/public/IMG_2921.PNG',
-  title = 'RockFi Marketplace',
-  description = 'RockFi Market Capitalizations',
+  ogImage = 'https://psyop.rest/_next/image?url=logo.png&w=256&q=75',
+  title = 'STZY Marketplace',
+  description = 'STZY MarketPlace',
 }) => {
   return (
     <NextHead>
