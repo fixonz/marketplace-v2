@@ -35,7 +35,7 @@ class MyDocument extends Document {
         <link
           rel="shortcut icon"
           type="image/png"
-          href="https://cdn.discordapp.com/attachments/973140319677866024/1282730886730743980/4d58b4ca-b990-4058-ad5e-502f917d54cb.png?ex=66e06bbb&is=66df1a3b&hm=e45f64f7209729c6dea8117531ddc44867080e6b796cc0f47a5a0703173b2fcd&"
+          href="https://pbs.twimg.com/profile_images/1848835398929207297/6Zura6P3_400x400.jpg"
         />
 
         {/* Reservoir meta tags */}
