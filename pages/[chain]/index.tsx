@@ -1,77 +1,139 @@
-import {
-  GetStaticPaths,
-  GetStaticProps,
-  InferGetStaticPropsType,
-  NextPage,
-} from 'next'
-import { Text, Flex, Box, Button } from 'components/primitives'
-import Layout from 'components/Layout'
-import { ComponentPropsWithoutRef, useContext, useState } from 'react'
-import { Footer } from 'components/home/Footer'
-import { useMediaQuery } from 'react-responsive'
-import { useMarketplaceChain, useMounted } from 'hooks'
 import { paths } from '@reservoir0x/reservoir-sdk'
-import { useCollections } from '@reservoir0x/reservoir-kit-ui'
-import fetcher from 'utils/fetcher'
-import { NORMALIZE_ROYALTIES } from '../_app'
-import supportedChains from 'utils/chains'
+import { Head } from 'components/Head'
+import Layout from 'components/Layout'
+import { Footer } from 'components/home/Footer'
+import { Box, Button, Flex, Text } from 'components/primitives'
+import { ChainContext } from 'context/ChainContextProvider'
+import { useMarketplaceChain, useMounted } from 'hooks'
+import { GetServerSideProps, InferGetServerSidePropsType, NextPage } from 'next'
 import Link from 'next/link'
+import {
+  ComponentPropsWithoutRef,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import supportedChains, { DefaultChain } from 'utils/chains'
+import * as Tabs from '@radix-ui/react-tabs'
+import {
+  useTrendingCollections,
+  useTrendingMints,
+} from '@reservoir0x/reservoir-kit-ui'
 import ChainToggle from 'components/common/ChainToggle'
 import CollectionsTimeDropdown, {
   CollectionsSortingOption,
 } from 'components/common/CollectionsTimeDropdown'
-import { Head } from 'components/Head'
+import MintsPeriodDropdown, {
+  MintsSortingOption,
+} from 'components/common/MintsPeriodDropdown'
+import { FeaturedCards } from 'components/home/FeaturedCards'
+import { TabsContent, TabsList, TabsTrigger } from 'components/primitives/Tab'
 import { CollectionRankingsTable } from 'components/rankings/CollectionRankingsTable'
-import { ChainContext } from 'context/ChainContextProvider'
-import { Dropdown, DropdownMenuItem } from 'components/primitives/Dropdown'
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { MintRankingsTable } from 'components/rankings/MintRankingsTable'
+import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
+import { useMediaQuery } from 'react-responsive'
+import fetcher from 'utils/fetcher'
 
-type Props = InferGetStaticPropsType<typeof getStaticProps>
+type TabValue = 'collections' | 'mints'
 
-const IndexPage: NextPage<Props> = ({ ssr }) => {
-  const isSSR = typeof window === 'undefined'
-  const isMounted = useMounted()
-  const compactToggleNames = useMediaQuery({ query: '(max-width: 800px)' })
-  const [sortByTime, setSortByTime] =
-    useState<CollectionsSortingOption>('1DayVolume')
-  const marketplaceChain = useMarketplaceChain()
+type Props = InferGetServerSidePropsType<typeof getServerSideProps>
+
+const Home: NextPage<Props> = ({ ssr }) => {
   const router = useRouter()
+  const marketplaceChain = useMarketplaceChain()
+  const isMounted = useMounted()
 
-  let collectionQuery: Parameters<typeof useCollections>['0'] = {
-    limit: 10,
-    sortBy: sortByTime,
-    includeTopBid: true,
+  // not sure if there is a better way to fix this
+  const { theme: nextTheme } = useTheme()
+  const [theme, setTheme] = useState<string | null>(null)
+  useEffect(() => {
+    if (nextTheme) {
+      setTheme(nextTheme)
+    }
+  }, [nextTheme])
+
+  const isSSR = typeof window === 'undefined'
+  const isSmallDevice = useMediaQuery({ query: '(max-width: 800px)' })
+
+  const [tab, setTab] = useState<TabValue>('collections')
+  const [sortByTime, setSortByTime] = useState<CollectionsSortingOption>('24h')
+
+  const [sortByPeriod, setSortByPeriod] = useState<MintsSortingOption>('24h')
+
+  let mintsQuery: Parameters<typeof useTrendingMints>['0'] = {
+    limit: 20,
+    period: sortByPeriod,
+    type: 'any',
   }
 
   const { chain, switchCurrentChain } = useContext(ChainContext)
 
-  if (chain.collectionSetId) {
-    collectionQuery.collectionsSetId = chain.collectionSetId
-  } else if (chain.community) {
-    collectionQuery.community = chain.community
-  }
+  useEffect(() => {
+    if (router.query.chain) {
+      let chainIndex: number | undefined
+      for (let i = 0; i < supportedChains.length; i++) {
+        if (supportedChains[i].routePrefix == router.query.chain) {
+          chainIndex = supportedChains[i].id
+        }
+      }
+      if (chainIndex !== -1 && chainIndex) {
+        switchCurrentChain(chainIndex)
+      }
+    }
+  }, [router.query])
 
-  const { data, isValidating } = useCollections(collectionQuery, {
-    fallbackData: [ssr.collections[marketplaceChain.id]],
-  })
+  const {
+    data: trendingCollections,
+    isValidating: isTrendingCollectionsValidating,
+  } = useTrendingCollections(
+    {
+      limit: 20,
+      sortBy: 'volume',
+      period: sortByTime,
+    },
+    chain.id,
+    {
+      fallbackData: ssr.trendingCollections,
+      keepPreviousData: true,
+    }
+  )
 
-  let collections = data || []
+  const {
+    data: featuredCollections,
+    isValidating: isFeaturedCollectionsValidating,
+  } = useTrendingCollections(
+    {
+      limit: 20,
+      sortBy: 'sales',
+      period: '24h',
+    },
+    chain.id,
+    {
+      fallbackData: ssr.featuredCollections,
+      keepPreviousData: true,
+    }
+  )
+
+  const { data: trendingMints, isValidating: isTrendingMintsValidating } =
+    useTrendingMints({ ...mintsQuery }, chain.id, {
+      fallbackData: ssr.trendingMints,
+      keepPreviousData: true,
+    })
 
   let volumeKey: ComponentPropsWithoutRef<
     typeof CollectionRankingsTable
-  >['volumeKey'] = 'allTime'
+  >['volumeKey'] = '1day'
 
   switch (sortByTime) {
-    case '1DayVolume':
-      volumeKey = '1day'
+    case '30d':
+      volumeKey = '30day'
       break
-    case '7DayVolume':
+    case '7d':
       volumeKey = '7day'
       break
-    case '30DayVolume':
-      volumeKey = '30day'
+    case '24h':
+      volumeKey = '1day'
       break
   }
 
@@ -83,211 +145,252 @@ const IndexPage: NextPage<Props> = ({ ssr }) => {
           p: 24,
           height: '100%',
           '@bp800': {
-            p: '$6',
+            px: '$5',
+          },
+          '@xl': {
+            px: '$6',
           },
         }}
       >
-        <Flex
-          direction="column"
+        <Box
           css={{
-            mx: 'auto',
-            maxWidth: 728,
-            pt: '$5',
-            textAlign: 'center',
-            alignItems: 'flex-start',
-            '@bp600': { alignItems: 'center' },
+            mb: 64,
           }}
         >
-          <Flex
-            css={{
-              mb: '$4',
-              gap: '$3',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              maxWidth: '100%',
-              '@bp600': {
-                flexDirection: 'row',
-                alignItems: 'center',
-              },
-            }}
-          >
-            <Text style="h3" css={{ flexShrink: 0 }}>
-              Explore NFTs
-            </Text>{' '}
-            <Flex css={{ gap: '$3', maxWidth: '100%' }}>
-              <Text style="h3" color="subtle">
-                on
-              </Text>
-              <Dropdown
-                contentProps={{
-                  sideOffset: 8,
-                  asChild: true,
-                  style: {
-                    margin: 0,
-                  },
-                }}
-                trigger={
-                  <Flex
-                    css={{
-                      gap: '$3',
-                      alignItems: 'center',
-                      cursor: 'pointer',
-                      minWidth: 0,
-                    }}
-                  >
-                    <Text style="h3" ellipsify>
-                      {' ' + marketplaceChain.name}
-                    </Text>
-                    <FontAwesomeIcon
-                      icon={faChevronDown}
-                      width={16}
-                      height={16}
-                      color="#9BA1A6"
-                    />
-                  </Flex>
-                }
-              >
-                <Flex direction="column" css={{ minWidth: 150 }}>
-                  {supportedChains.map(({ name, id, routePrefix }) => (
-                    <DropdownMenuItem
-                      css={{
-                        textAlign: 'left',
-                      }}
-                      key={id}
-                      onClick={() => {
-                        const newUrl = router.asPath.replace(
-                          chain.routePrefix,
-                          routePrefix
-                        )
-                        switchCurrentChain(id)
-                        router.replace(newUrl, undefined, { scroll: false })
-                      }}
-                    >
-                      <Text
-                        style="h6"
-                        color={
-                          id === marketplaceChain.id ? undefined : 'subtle'
-                        }
-                        css={{ cursor: 'pointer' }}
-                      >
-                        {name}
-                      </Text>
-                    </DropdownMenuItem>
-                  ))}
-                </Flex>
-              </Dropdown>
-            </Flex>
-          </Flex>
-          <Text style="body1" color="subtle" css={{ mb: 48 }}>
-            Multi-Chain Explorer, powered by RockFi
-          </Text>
-        </Flex>
-        <Flex css={{ my: '$6', gap: 65 }} direction="column">
           <Flex
             justify="between"
             align="start"
             css={{
-              flexDirection: 'column',
               gap: 24,
-              '@bp800': {
-                alignItems: 'center',
-                flexDirection: 'row',
-              },
+              mb: '$4',
             }}
           >
             <Text style="h4" as="h4">
-              Popular Rock  Collections
+              Featured
             </Text>
-            <Flex align="center" css={{ gap: '$4' }}>
-              <CollectionsTimeDropdown
-                compact={compactToggleNames && isMounted}
-                option={sortByTime}
-                onOptionSelected={(option) => {
-                  setSortByTime(option)
-                }}
-              />
-              <ChainToggle />
-            </Flex>
           </Flex>
-          {isSSR || !isMounted ? null : (
-            <CollectionRankingsTable
-              collections={collections}
-              loading={isValidating}
-              volumeKey={volumeKey}
-            />
-          )}
-          <Box css={{ alignSelf: 'center' }}>
-            <Link href={`/${marketplaceChain.routePrefix}/collection-rankings`}>
-              <Button
-                css={{
-                  minWidth: 224,
-                  justifyContent: 'center',
-                }}
-                size="large"
-              >
-                View All
-              </Button>
-            </Link>
+          <Box
+            css={{
+              height: '100%',
+            }}
+          >
+            <FeaturedCards collections={featuredCollections} />
           </Box>
-        </Flex>
-        <Footer />
+        </Box>
+
+        <Tabs.Root
+          onValueChange={(tab) => setTab(tab as TabValue)}
+          defaultValue="collections"
+        >
+          <Flex justify="between" align="start" css={{ mb: '$3' }}>
+            <Text style="h4" as="h4">
+              Trending
+            </Text>
+            {!isSmallDevice && (
+              <Flex
+                align="center"
+                css={{
+                  gap: '$4',
+                }}
+              >
+                {tab === 'collections' ? (
+                  <CollectionsTimeDropdown
+                    compact={isSmallDevice && isMounted}
+                    option={sortByTime}
+                    onOptionSelected={(option) => {
+                      setSortByTime(option)
+                    }}
+                  />
+                ) : (
+                  <MintsPeriodDropdown
+                    option={sortByPeriod}
+                    onOptionSelected={setSortByPeriod}
+                  />
+                )}
+                <ChainToggle />
+              </Flex>
+            )}
+          </Flex>
+          <TabsList css={{ mb: 24, mt: 0, borderBottom: 'none' }}>
+            <TabsTrigger value="collections">Collections</TabsTrigger>
+            <TabsTrigger value="mints">Mints</TabsTrigger>
+          </TabsList>
+          {isSmallDevice && (
+            <Flex
+              justify="between"
+              align="center"
+              css={{
+                gap: 24,
+                mb: '$4',
+              }}
+            >
+              <Flex align="center" css={{ gap: '$4' }}>
+                {tab === 'collections' ? (
+                  <CollectionsTimeDropdown
+                    compact={isSmallDevice && isMounted}
+                    option={sortByTime}
+                    onOptionSelected={(option) => {
+                      setSortByTime(option)
+                    }}
+                  />
+                ) : (
+                  <MintsPeriodDropdown
+                    option={sortByPeriod}
+                    onOptionSelected={setSortByPeriod}
+                  />
+                )}
+                <ChainToggle />
+              </Flex>
+            </Flex>
+          )}
+          <TabsContent value="collections">
+            <Box
+              css={{
+                height: '100%',
+              }}
+            >
+              <Flex direction="column">
+                {isSSR || !isMounted ? null : (
+                  <CollectionRankingsTable
+                    collections={trendingCollections || []}
+                    volumeKey={volumeKey}
+                    loading={isTrendingCollectionsValidating}
+                  />
+                )}
+                <Box
+                  css={{
+                    display: isTrendingCollectionsValidating ? 'none' : 'block',
+                  }}
+                ></Box>
+              </Flex>
+            </Box>
+          </TabsContent>
+          <TabsContent value="mints">
+            <Box
+              css={{
+                height: '100%',
+              }}
+            >
+              <Flex direction="column">
+                {isSSR || !isMounted ? null : (
+                  <MintRankingsTable
+                    mints={trendingMints || []}
+                    loading={isTrendingMintsValidating}
+                  />
+                )}
+                <Box
+                  css={{
+                    display: isTrendingCollectionsValidating ? 'none' : 'block',
+                  }}
+                ></Box>
+              </Flex>
+            </Box>
+          </TabsContent>
+        </Tabs.Root>
+        <Box css={{ my: '$5' }}>
+          <Link href={`/${marketplaceChain.routePrefix}/${tab}/trending`}>
+            <Button>See More</Button>
+          </Link>
+        </Box>
       </Box>
+
+      <Footer />
     </Layout>
   )
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [],
-    fallback: 'blocking',
-  }
-}
+type TrendingCollectionsSchema =
+  paths['/collections/trending/v1']['get']['responses']['200']['schema']
+type TrendingMintsSchema =
+  paths['/collections/trending-mints/v1']['get']['responses']['200']['schema']
 
-type CollectionSchema =
-  paths['/collections/v5']['get']['responses']['200']['schema']
-type ChainCollections = Record<string, CollectionSchema>
-
-export const getStaticProps: GetStaticProps<{
+export const getServerSideProps: GetServerSideProps<{
   ssr: {
-    collections: ChainCollections
+    trendingMints: TrendingMintsSchema
+    trendingCollections: TrendingCollectionsSchema
+    featuredCollections: TrendingCollectionsSchema
   }
-}> = async () => {
-  let collectionQuery: paths['/collections/v5']['get']['parameters']['query'] =
+}> = async ({ params, res }) => {
+  const chainPrefix = params?.chain || ''
+  const { reservoirBaseUrl } =
+    supportedChains.find((chain) => chain.routePrefix === chainPrefix) ||
+    DefaultChain
+
+  const headers: RequestInit = {
+    headers: {
+      'x-api-key': process.env.RESERVOIR_API_KEY || '',
+    },
+  }
+
+  let trendingCollectionsQuery: paths['/collections/trending/v1']['get']['parameters']['query'] =
     {
-      sortBy: '1DayVolume',
-      normalizeRoyalties: NORMALIZE_ROYALTIES,
-      includeTopBid: true,
-      limit: 10,
+      period: '24h',
+      limit: 20,
+      sortBy: 'volume',
     }
 
-  const promises: ReturnType<typeof fetcher>[] = []
-  supportedChains.forEach((chain) => {
-    const query = { ...collectionQuery }
-    if (chain.collectionSetId) {
-      query.collectionsSetId = chain.collectionSetId
-    } else if (chain.community) {
-      query.community = chain.community
+  const trendingCollectionsPromise = fetcher(
+    `${reservoirBaseUrl}/collections/trending/v1`,
+    trendingCollectionsQuery,
+    headers
+  )
+
+  let featuredCollectionQuery: paths['/collections/trending/v1']['get']['parameters']['query'] =
+    {
+      period: '24h',
+      limit: 20,
+      sortBy: 'sales',
     }
-    promises.push(
-      fetcher(`${chain.reservoirBaseUrl}/collections/v5`, query, {
-        headers: {
-          'x-api-key': chain.apiKey || '',
-        },
-      })
-    )
-  })
-  const responses = await Promise.allSettled(promises)
-  const collections: ChainCollections = {}
-  responses.forEach((response, i) => {
-    if (response.status === 'fulfilled') {
-      collections[supportedChains[i].id] = response.value.data
+
+  const featuredCollectionsPromise = fetcher(
+    `${reservoirBaseUrl}/collections/trending/v1`,
+    featuredCollectionQuery,
+    headers
+  )
+
+  let trendingMintsQuery: paths['/collections/trending-mints/v1']['get']['parameters']['query'] =
+    {
+      period: '24h',
+      limit: 20,
+      type: 'any',
     }
+
+  const trendingMintsPromise = fetcher(
+    `${reservoirBaseUrl}/collections/trending-mints/v1`,
+    trendingMintsQuery,
+    headers
+  )
+
+  const promises = await Promise.allSettled([
+    trendingCollectionsPromise,
+    featuredCollectionsPromise,
+    trendingMintsPromise,
+  ]).catch((e) => {
+    console.error(e)
   })
+
+  const trendingCollections: Props['ssr']['trendingCollections'] =
+    promises?.[0].status === 'fulfilled' && promises[0].value.data
+      ? (promises[0].value.data as Props['ssr']['trendingCollections'])
+      : {}
+  const featuredCollections: Props['ssr']['featuredCollections'] =
+    promises?.[1].status === 'fulfilled' && promises[1].value.data
+      ? (promises[1].value.data as Props['ssr']['featuredCollections'])
+      : {}
+
+  const trendingMints: Props['ssr']['trendingMints'] =
+    promises?.[1].status === 'fulfilled' && promises[1].value.data
+      ? (promises[1].value.data as Props['ssr']['trendingMints'])
+      : {}
+
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=120, stale-while-revalidate=180'
+  )
 
   return {
-    props: { ssr: { collections } },
-    revalidate: 5,
+    props: { ssr: { trendingCollections, trendingMints, featuredCollections } },
   }
 }
 
-export default IndexPage
+export default Home
